@@ -18,5 +18,34 @@ class Product extends Model
     {
         return $this->status = Product::AVAILABLE_PRODUCT;
     }
+
+    /**
+     * Relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
+    /**
+     * Relation
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+
     //------------------------------------------------------------------------------------------------------------//
 }
