@@ -1,5 +1,7 @@
 <?php
 
+use \Illuminate\Support\Facades\DB;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,6 +13,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        // disabling foreign keys
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+
+        \App\Models\User::truncate();
+        \App\Models\Category::truncate();
+        \App\Models\Product::truncate();
+        \App\Models\Transaction::truncate();
+        DB::table('category_product')->truncate();
+
+        $userQuantity = 200;
+        $categoriesQuantity = 30;
+        $productsQuantity = 1000;
+        $transactionsQuantity = 1000;
+
+        factory(\App\Models\User::class, $userQuantity)->create();
+        factory(\App\Models\Category::class, $categoriesQuantity)->create();
+        factory(\App\Models\Product::class, $productsQuantity)->create()->each(
+            function ($product){
+                $categories = \App\Models\Category::all()->random(mt_rand(1,5))->pluck('id');
+                $product->categories()->attach($categories);
+            }
+        );
+        factory(\App\Models\Transaction::class, $transactionsQuantity)->create();
     }
 }
