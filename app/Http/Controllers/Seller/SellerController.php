@@ -21,7 +21,6 @@ class SellerController extends Controller
     }
 
 
-
     /**
      * Display the specified resource.
      *
