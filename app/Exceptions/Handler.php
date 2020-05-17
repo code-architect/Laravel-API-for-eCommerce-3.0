@@ -99,7 +99,6 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
         return $this->errorResponse("Unexpected Exception. try later", 500);
-
     }
 
     /**
