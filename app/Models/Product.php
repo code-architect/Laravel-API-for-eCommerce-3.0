@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -25,7 +28,7 @@ class Product extends Model
 
     /**
      * Relation
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function seller()
     {
@@ -34,7 +37,7 @@ class Product extends Model
 
     /**
      * Relation
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function transactions()
     {
@@ -43,13 +46,11 @@ class Product extends Model
 
     /**
      * Relation
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
-
-
     //------------------------------------------------------------------------------------------------------------//
 }
