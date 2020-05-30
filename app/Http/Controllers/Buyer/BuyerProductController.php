@@ -8,7 +8,11 @@ use App\Http\Controllers\Controller;
 
 class BuyerProductController extends ApiController
 {
-
+    /**
+     * Get products details of each buyers, each transaction
+     * @param Buyer $buyer
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Buyer $buyer)
     {
         // The result of the transaction relationship is a collection, because a buyer have many transactions
