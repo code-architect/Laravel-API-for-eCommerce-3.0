@@ -12,6 +12,7 @@ class Product extends Model
 {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $hidden = ['pivot'];  // removing pivot data part from the received json response
 
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';

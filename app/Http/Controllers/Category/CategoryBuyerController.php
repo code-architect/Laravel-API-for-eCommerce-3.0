@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 class CategoryBuyerController extends ApiController
 {
     /**
-     * getting all the unique buyers/buyer of single category
+     * Getting all the unique buyers/buyer of single category
      * @param Category $category
      * @return \Illuminate\Http\JsonResponse
      */

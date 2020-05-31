@@ -9,6 +9,7 @@ class Category extends Model
 {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $hidden = ['pivot'];  // removing pivot data part from the received json response
 
     protected $fillable = [
         'name', 'description'
