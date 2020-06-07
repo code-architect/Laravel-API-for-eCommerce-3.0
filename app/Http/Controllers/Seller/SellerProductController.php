@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -87,6 +88,14 @@ class SellerProductController extends ApiController
                 return $this->errorResponse('An active product must have at least one category', 409);
             }
         }
+
+        // check if image is available or not, if available delete the previous image
+        if($request->hasFile('image'))
+        {
+            Storage::delete($product->image);
+            $product->image = $request->image->store('');
+        }
+
         if($product->isClean())
         {
             return $this->errorResponse('Specify a different value to update', 409);
@@ -108,6 +117,7 @@ class SellerProductController extends ApiController
         // check if the seller is the product owner
         $this->checkSeller($seller, $product);
         $product->delete();
+        Storage::delete($product->image);
         return $this->showOne($product);
     }
 
