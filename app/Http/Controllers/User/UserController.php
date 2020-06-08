@@ -120,4 +120,22 @@ class UserController extends ApiController
         $user->delete();
         return $this->showOne($user);
     }
+
+    //------------------------------------------ Non resource Methods -------------------------------------------------/
+
+    /**
+     * Verify the user given token(which user has received through email) with the existing token an verify the user
+     * @param $token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify($token)
+    {
+        // Find the user with the token
+        $user = User::where('verification_token', $token)->firstOrFail();
+        $user->verified = User::VERIFIED_USER;
+        $user->verification_token = null;
+
+        $user->save();
+        return $this->showMessage('The account has been verified successfully');
+    }
 }
