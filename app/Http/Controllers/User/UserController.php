@@ -72,9 +72,9 @@ class UserController extends ApiController
     public function update(Request $request, User $user)
     {
         $rules = [
-            'email'     =>  'email|unique:users,email'.$user->id,
-            'password'  =>  'min:6|confirmed',
-            'admin'     =>  'in:'.User::ADMIN_USER.','.User::REGULAR_USER
+            'email'     => 'email|unique:users,email,' . $user->id,
+            'password'  => 'min:6|confirmed',
+            'admin'     => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
         ];
         $this->validate($request, $rules);
 
