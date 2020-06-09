@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
+use App\Mail\UserCreated;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends ApiController
 {
@@ -137,5 +139,26 @@ class UserController extends ApiController
 
         $user->save();
         return $this->showMessage('The account has been verified successfully');
+    }
+
+
+    /**
+     * Resending verification email to an unverified user
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
+     */
+    public function resend(User $user)
+    {
+        // No need to send verification code if the user is verified, send an error instead
+        if($user->isVerified())
+        {
+            return $this->errorResponse('The user is already verified', 409);
+        }
+        // using retry function to resend the email if failed making it failing prone
+        retry(5, function() use($user) {
+            Mail::to($user)->send(new UserCreated($user));
+        }, 100);
+        return $this->showMessage('A verification mail has been send to your registered email.');
     }
 }

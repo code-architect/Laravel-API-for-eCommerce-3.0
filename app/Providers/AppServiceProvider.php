@@ -34,14 +34,18 @@ class AppServiceProvider extends ServiceProvider
         // send a verification email to the user email after creation
         User::created(function($user)
         {
-            Mail::to($user)->send(new UserCreated($user));
+            retry(5, function() use($user){
+                Mail::to($user)->send(new UserCreated($user));
+            }, 100);
         });
 
         // send a verification email to the user after an email changed
         User::updated(function($user)
         {
             if($user->isDirty('email')){
-                Mail::to($user)->send(new UserMailChanged($user));
+                retry(5, function() use($user){
+                    Mail::to($user)->send(new UserMailChanged($user));
+                }, 100);
             }
         });
     }
