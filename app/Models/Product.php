@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Transformers\ProductTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +14,8 @@ class Product extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $hidden = ['pivot'];  // removing pivot data part from the received json response
+
+    public $transformer = ProductTransformer::class;
 
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';

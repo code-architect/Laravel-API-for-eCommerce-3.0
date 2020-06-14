@@ -3,10 +3,13 @@
 namespace App\Models;
 use App\Models\Transaction;
 use App\Scopes\BuyerScope;
+use App\Transformers\BuyerTransformer;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Buyer extends User
 {
+    public $transformer = BuyerTransformer::class;
+
     protected static function boot()
     {
         parent::boot();
