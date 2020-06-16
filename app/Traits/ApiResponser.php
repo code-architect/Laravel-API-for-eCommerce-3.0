@@ -3,7 +3,9 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 trait  ApiResponser
 {
@@ -44,8 +46,10 @@ trait  ApiResponser
         }
 
         $transformer = $collection->first()->transformer;
+        // reducing the quantity of data, making the sort a little faster
         $collection  =$this->filterData($collection, $transformer);
         $collection  =$this->sortData($collection, $transformer);
+        $collection  =$this->paginate($collection);
         $collection = $this->transformData($collection, $transformer);
         return $this->successResponse($collection, $code);
     }
@@ -106,6 +110,35 @@ trait  ApiResponser
         }
         return $collection;
     }
+
+
+    protected function paginate(Collection $collection)
+    {
+        $rules = [
+            'per_page'  => 'integer|min:2|max:50',
+        ];
+        // NOTE: Remember, we are not in a controller, and our trait might not be used by every controller,
+        //       based on these conditions validate.
+        Validator::validate(request()->all(),$rules);
+
+        // get the current page
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 15;
+        if(request()->has('per_page')){
+            $perPage = (int)request()->per_page;
+        }
+
+        $results = $collection->slice(($page -1) * $perPage, $perPage)->values();
+        $paginated = new LengthAwarePaginator($results, $collection->count(), $perPage, $page, [
+            'path' => LengthAwarePaginator::resolveCurrentPath(),
+        ]);
+        // NOTE: When we resolve the 'path' it will only take it to account.i.e. it will ignore other parameters
+        //       if we send sort by parameter it will ignore it. To resolve this we need to tell to the paginator
+        //       results to append/include other parameter results.
+        $paginated->appends(request()->all());
+        return $paginated;
+    }
+
 
     /**
      * Transform the data using the respected Transformers and change the return type of the queried data
