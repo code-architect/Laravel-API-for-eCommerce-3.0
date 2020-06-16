@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 trait  ApiResponser
@@ -51,6 +52,9 @@ trait  ApiResponser
         $collection  =$this->sortData($collection, $transformer);
         $collection  =$this->paginate($collection);
         $collection = $this->transformData($collection, $transformer);
+        // catching the data
+        $collection = $this->cacheResponse($collection);
+
         return $this->successResponse($collection, $code);
     }
 
@@ -112,6 +116,11 @@ trait  ApiResponser
     }
 
 
+    /**
+     * Pagination with page limit and with additionally passed arguments
+     * @param Collection $collection
+     * @return LengthAwarePaginator
+     */
     protected function paginate(Collection $collection)
     {
         $rules = [
@@ -150,5 +159,32 @@ trait  ApiResponser
     {
         $transformation = fractal($data, new $transformer);
         return $transformation->toArray();
+    }
+
+
+    /**
+     * The cache is going to change/recreate a new cache version of the request based on different query parameters
+     * @param $data
+     * @return mixed
+     */
+    protected function cacheResponse($data)
+    {
+        // make sure that we are caching unique stuff, so differentiate different request based on url
+        $url = request()->url();
+        $queryParams = request()->query();
+
+        // sort the query parameters based on the key of the array
+        // ksort acts by reference and not by value so we can move to next step
+        ksort($queryParams);
+
+        // build a new string based on these query parameters
+        $queryString = http_build_query($queryParams);
+
+        // now we build the full url
+        $fullUrl = "{$url}?{$queryString}";
+
+        return Cache::remember($fullUrl, 30/60, function () use($data){
+            return $data;
+        });
     }
 }
