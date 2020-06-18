@@ -115,6 +115,10 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        if($this->isFrontend($request))
+        {
+            return redirect()->guest('login');
+        }
         return $this->errorResponse('Unauthenticated.', 401);
     }
 
@@ -129,6 +133,28 @@ class Handler extends ExceptionHandler
     {
         $errors = $e->validator->errors()->getMessages();
 
+        if($this->isFrontend($request))
+        {
+            return $request->ajax() ? response()->json($errors, 422) : redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors($errors);
+        }
+
         return $this->errorResponse($errors, 422);
+    }
+
+
+    /**
+     * Check if the request is from frontend using the 'web' middleware or from the backend
+     * @param $request
+     * @return bool
+     */
+    private function isFrontend($request)
+    {
+        // check if the request accepts HTML and first check the information of the request about the route then
+        // a possible list of the middleware, make a collection of it the received array and then check if
+        // it contains the middleware 'web'
+        return $request->acceptsHtml()  && collect($request->route()->middleware())->contains('web');
     }
 }
