@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class TransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Show all transaction
      * @return JsonResponse

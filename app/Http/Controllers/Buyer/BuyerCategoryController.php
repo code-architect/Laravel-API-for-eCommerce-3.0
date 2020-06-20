@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class BuyerCategoryController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting unique categories/category for individual Buyer
      * @param Buyer $buyer

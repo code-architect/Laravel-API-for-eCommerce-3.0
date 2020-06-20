@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class ProductTransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting all the transaction of a single product
      * @param Product $product

@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class SellerTransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Get all transactions for a specific seller
      * @param Seller $seller

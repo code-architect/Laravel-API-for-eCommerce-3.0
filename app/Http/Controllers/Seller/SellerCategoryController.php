@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class SellerCategoryController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting all the categories of the seller
      * @param Seller $seller

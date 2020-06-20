@@ -8,6 +8,12 @@ use App\Http\Controllers\Controller;
 
 class BuyerProductController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Get products details of each buyers, each transaction
      * @param Buyer $buyer

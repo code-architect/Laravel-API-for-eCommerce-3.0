@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class CategorySellerController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting all the unique sellers of the products in the same category
      * @param Category $category

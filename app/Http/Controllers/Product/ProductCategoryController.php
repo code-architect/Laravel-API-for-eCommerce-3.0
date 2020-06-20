@@ -13,6 +13,7 @@ class ProductCategoryController extends ApiController
     public function __construct()
     {
         $this->middleware('client.credentials')->only(['index']);
+        $this->middleware('auth:api')->except(['index']);
     }
     /**
      * Getting all the categories associated with the product

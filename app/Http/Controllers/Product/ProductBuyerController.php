@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class ProductBuyerController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting all the unique buyers for a product
      * @param Product $product

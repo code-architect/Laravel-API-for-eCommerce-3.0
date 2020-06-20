@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class CategoryTransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting all the transactions of the products of a category
      * @param Category $category

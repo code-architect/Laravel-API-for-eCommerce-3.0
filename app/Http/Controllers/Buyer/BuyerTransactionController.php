@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class BuyerTransactionController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * get all transaction of a single buyer
      * @param Buyer $buyer

@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class SellerBuyerController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Getting all the buyers of a single seller
      * @param Seller $seller
