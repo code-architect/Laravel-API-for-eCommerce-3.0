@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class TransactionCategoryController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('client.credentials')->only(['index']);
+    }
+
+
     /**
      * Get the list of categories of a single product transaction
      * @param Transaction $transaction

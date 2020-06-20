@@ -6,6 +6,7 @@ use App\Http\Middleware\CustomThrottleRequest;
 use App\Http\Middleware\SignatureMiddleware;
 use App\Http\Middleware\TransformInput;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
 class Kernel extends HttpKernel
 {
@@ -63,6 +64,7 @@ class Kernel extends HttpKernel
 //        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'throttle' => CustomThrottleRequest::class,
         'signature' =>  SignatureMiddleware::class,
-        'transform.input'   =>  TransformInput::class,
+        'transform.input' =>  TransformInput::class,
+        'client.credentials'  => CheckClientCredentials::class,
     ];
 }
