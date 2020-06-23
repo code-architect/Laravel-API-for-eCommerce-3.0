@@ -38,6 +38,8 @@
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                         &nbsp;<li><a href="{{route('personal-tokens')}}">My Tokens</a> </li>
+                        &nbsp;<li><a href="{{route('my-clients')}}">My Clients</a> </li>
+                        &nbsp;<li><a href="{{route('authorized-clients')}}">Authorized Tokens</a> </li>
                         @endif
                     </ul>
 
